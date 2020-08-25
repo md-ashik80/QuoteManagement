@@ -1,0 +1,14 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/QuoteManagement.Api/.sonarqube
+/QuoteManagement.Api/.vs
+/QuoteManagement.Api/QuoteManagement.Api/bin/Debug/netcoreapp3.1
+/QuoteManagement.Api/QuoteManagement.Api/obj/Debug/netcoreapp3.1
+/QuoteManagement.Api/QuoteManagement.Api/obj/Release/netcoreapp3.1
+/QuoteManagement.Api/QuoteManagement.Api/obj
+/QuoteManagement.Api/QuoteManagement.Api.Test/bin/Debug/netcoreapp3.1
+/QuoteManagement.Api/QuoteManagement.Api.Test/obj
+/QuoteManagement.Api/QuoteManagement.Api.Test/coverage.opencover.xml
