@@ -27,6 +27,7 @@ namespace QuoteManagement.Api.Test.Rules
             var expectedMaturityAmount = investmentAmount * (1 + pensionPlan.Factor) * duration / 100.0m;
 
             Assert.AreEqual(expectedMaturityAmount, maturityAmount, "Expected MaturityAmount is not calculated");
+            
         }
 
         [Test]
