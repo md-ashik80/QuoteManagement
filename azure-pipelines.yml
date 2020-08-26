@@ -27,13 +27,17 @@ steps:
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+- task: SonarQubePrepare@4
+  inputs:
+    SonarQube: 'SONARQUBE_LOCALHOST'
+    scannerMode: 'MSBuild'
+    projectKey: '48100830e7ae21c3c2cd95fccc9245679e289df6'
+    projectName: 'Micro-credential.QuoteManagement.Api'
 
-#- task: VSTest@2
-#  inputs:
-#    platform: '$(buildPlatform)'
-#    configuration: '$(buildConfiguration)'
-# ...
-# do this after other tasks such as building
+- task: SonarQubeAnalyze@4
+- task: SonarQubePublish@4
+  inputs:
+    pollingTimeoutSec: '300'
 - task: DotNetCoreCLI@2
   inputs:
     command: test
