@@ -9,8 +9,9 @@ using QuoteManagement.Api.Rules;
 
 namespace QuoteManagement.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class QuotesController : ControllerBase
     {
         private readonly IQuoteRequestRepository _quoteRequestRepository;
@@ -80,7 +81,7 @@ namespace QuoteManagement.Api.Controllers
 
         // POST: api/Quotes
         [HttpPost]
-        public IActionResult PostQuoteRequest([FromBody] QuoteRequest quoteRequest)
+        public IActionResult PostQuoteRequest([FromBody] QuoteRequest quoteRequest, [FromRoute]ApiVersion version)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +92,8 @@ namespace QuoteManagement.Api.Controllers
             _quoteRequestRepository.Add(quoteRequest);
             _quoteRequestRepository.SaveChanges();
 
-            return CreatedAtAction("GetQuoteRequest", new { id = quoteRequest.Id }, quoteRequest);
+            //return CreatedAtAction("PostQuoteRequest", new { id = quoteRequest.Id, version = version }, quoteRequest);
+            return CreatedAtAction("PostQuoteRequest", quoteRequest);
         }
 
         // DELETE: api/Quotes/5

@@ -77,7 +77,7 @@ namespace QuoteManagement.Api.Test.Controllers
 
             var controller = new QuotesController(repository.Object, calculater.Object);
 
-            var result = controller.PostQuoteRequest(quote);
+            var result = controller.PostQuoteRequest(quote, null);
                         
             repository.Verify(r => r.Add(quote), Times.Once, "Quote is not added");
             repository.Verify(r => r.SaveChanges(), Times.Once, "Quote is not saved");
@@ -102,7 +102,7 @@ namespace QuoteManagement.Api.Test.Controllers
             var controller = new QuotesController(repository.Object, null);
 
             controller.ModelState.AddModelError("RetirementAge", "RetirementAge is not valid.");
-            var result = controller.PostQuoteRequest(quote);
+            var result = controller.PostQuoteRequest(quote, null);
 
             Assert.IsInstanceOf<BadRequestObjectResult>(result);
 
