@@ -1,4 +1,0 @@
-dotnet C:\Ashik\Micro-credential\sonar-scanner-msbuild-4.10.0.19059-netcoreapp3.0\SonarScanner.MSBuild.dll begin /k:"Micro-credential.QuoteManagement.Api" /d:sonar.host.url="http://localhost:9000" /d:sonar.login="48100830e7ae21c3c2cd95fccc9245679e289df6" /d:sonar.cs.opencover.reportsPaths=QuoteManagement.Api.Test/coverage.opencover.xml /d:sonar.coverage.exclusions="**Test*.cs"
-dotnet build C:\Ashik\Micro-credential\QuoteManagement.Api\QuoteManagement.Api.sln
-dotnet test QuoteManagement.Api.Test/QuoteManagement.Api.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-dotnet C:\Ashik\Micro-credential\sonar-scanner-msbuild-4.10.0.19059-netcoreapp3.0\SonarScanner.MSBuild.dll end /d:sonar.login="48100830e7ae21c3c2cd95fccc9245679e289df6"
