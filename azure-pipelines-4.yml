@@ -51,11 +51,12 @@ stages:
         artifact: 'drop'
         publishLocation: 'pipeline'
 
-- stage: Deploy
+- stage: DeployDev
   displayName: 'Deploy to DEV Stage'
+  dependsOn: Build
   jobs:
   - job: Deploy
-    displayName: 'Deploy Job'
+    displayName: 'Deploy Dev Job'
     steps:
     
     - task: DownloadPipelineArtifact@2
@@ -75,4 +76,28 @@ stages:
         WebAppName: 'modernquote'
         packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
+- stage: DeployQA
+  displayName: 'Deploy to QA Stage'
+  dependsOn: DeployDev
+  jobs:
+  - job: Deploy
+    displayName: 'Deploy QA Job'
+    steps:
+    
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download the Artifact'
+      inputs:
+        buildType: 'current'
+        artifactName: 'drop'
+        itemPattern: '**/*.zip'
+        targetPath: '$(Pipeline.Workspace)'
+
+    - task: AzureRmWebAppDeployment@4
+      displayName: 'Deploy to WebApp in Azure'
+      inputs:
+        ConnectionType: 'AzureRM'
+        azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
+        appType: 'webApp'
+        WebAppName: 'modernquote'
+        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
