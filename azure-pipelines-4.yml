@@ -54,50 +54,57 @@ stages:
 - stage: DeployDev
   displayName: 'Deploy to DEV Stage'
   dependsOn: Build
-  jobs:
-  - job: Deploy
+  jobs:  
+  - deployment: DeployDEV
+    environment: DEV
     displayName: 'Deploy Dev Job'
-    steps:
-    
-    - task: DownloadPipelineArtifact@2
-      displayName: 'Download the Artifact'
-      inputs:
-        buildType: 'current'
-        artifactName: 'drop'
-        itemPattern: '**/*.zip'
-        targetPath: '$(Pipeline.Workspace)'
+    strategy:
+     runOnce:
+       deploy:
+        steps:        
+        - task: DownloadPipelineArtifact@2
+          displayName: 'Download the Artifact'
+          inputs:
+            buildType: 'current'
+            artifactName: 'drop'
+            itemPattern: '**/*.zip'
+            targetPath: '$(Pipeline.Workspace)'
 
-    - task: AzureRmWebAppDeployment@4
-      displayName: 'Deploy to WebApp in Azure'
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
-        appType: 'webApp'
-        WebAppName: 'modernquote'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        - task: AzureRmWebAppDeployment@4
+          displayName: 'Deploy to WebApp in Azure'
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
+            appType: 'webApp'
+            WebAppName: 'modernquote'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
 - stage: DeployQA
   displayName: 'Deploy to QA Stage'
   dependsOn: DeployDev
   jobs:
-  - job: Deploy
+  - deployment: DeployQA
+    environment: QA  
     displayName: 'Deploy QA Job'
-    steps:
-    
-    - task: DownloadPipelineArtifact@2
-      displayName: 'Download the Artifact'
-      inputs:
-        buildType: 'current'
-        artifactName: 'drop'
-        itemPattern: '**/*.zip'
-        targetPath: '$(Pipeline.Workspace)'
+    strategy:
+     runOnce:
+       deploy:
+        steps:
+        
+        - task: DownloadPipelineArtifact@2
+          displayName: 'Download the Artifact'
+          inputs:
+            buildType: 'current'
+            artifactName: 'drop'
+            itemPattern: '**/*.zip'
+            targetPath: '$(Pipeline.Workspace)'
 
-    - task: AzureRmWebAppDeployment@4
-      displayName: 'Deploy to WebApp in Azure'
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
-        appType: 'webApp'
-        WebAppName: 'modernquote'
-        packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
+        - task: AzureRmWebAppDeployment@4
+          displayName: 'Deploy to WebApp in Azure'
+          inputs:
+            ConnectionType: 'AzureRM'
+            azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
+            appType: 'webApp'
+            WebAppName: 'modernquote'
+            packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
