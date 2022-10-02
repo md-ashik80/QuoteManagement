@@ -15,7 +15,7 @@ variables:
   buildConfiguration: 'Release'
 
 stages:
-- stage: Build Step
+- stage: Build 
   jobs:
   - job: Build
     steps:
