@@ -89,6 +89,6 @@ stages:
             ConnectionType: 'AzureRM'
             azureSubscription: 'Free Trial(b0891bcd-fb7a-4ff9-881e-ff6e91339c70)'
             appType: 'webApp'
-            WebAppName: 'modernquote'
+            WebAppName: 'modernquote-qa'
             packageForLinux: '$(Pipeline.Workspace)/**/*.zip'
 
