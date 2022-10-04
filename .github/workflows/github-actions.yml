@@ -1,0 +1,67 @@
+#Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps
+#Note: the 'AZURE_SP' secret is required to be added into GitHub Secrets. See this blog post for details: https://samlearnsazure.blog/2019/12/13/github-actions/
+#Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps
+#Note: the 'AZURE_SP' secret is required to be added into GitHub Secrets. See this blog post for details: https://samlearnsazure.blog/2019/12/13/github-actions/
+on:
+  push:
+    branches:
+    - master
+env:
+  solution: '**/*.sln'
+  buildPlatform: Any CPU
+  buildConfiguration: Release
+jobs:
+  Build_Stage_Build:
+    name: Build Job
+    steps:
+    - uses: actions/checkout@v2
+    - uses: microsoft/setup-msbuild@v1.0.2
+    - name: Install Nuget Tool
+      uses: nuget/setup-nuget@v1
+    - name: NuGet Restore
+      run: nuget restore ${{ env.solution }}
+    - name: Build .NET Core Solution
+      run: msbuild '${{ env.solution }}' /p:configuration='${{ env.buildConfiguration }}' /p:platform='${{ env.buildPlatform }}' /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip" /p:DeployIisAppPath="Default Web Site"
+    - name: Unit Test the Code
+      run: dotnet test **/*Test/*.csproj --configuration ${{ env.buildConfiguration }}
+    - name: Publish the Artifact
+      uses: actions/upload-artifact@v2
+      with:
+        path: ${{ env.Pipeline.Workspace }}
+  DeployDev_Stage_DeployDEV:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: Deploy Dev Job
+    needs:
+    - Build_Stage_Build
+    environment:
+      name: DEV
+    steps:
+    - # "Note: the 'AZURE_SP' secret is required to be added into GitHub Secrets. See this blog post for details: https://samlearnsazure.blog/2019/12/13/github-actions/"
+      name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    - name: Deploy to WebApp in Azure
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: modernquote
+        package: ${{ env.Pipeline.Workspace }}/**/*.zip
+  DeployQA_Stage_DeployQA:
+    # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    name: Deploy QA Job
+    needs:
+    - DeployDev_Stage_DeployDEV
+    environment:
+      name: QA
+    steps:
+    - # "Note: the 'AZURE_SP' secret is required to be added into GitHub Secrets. See this blog post for details: https://samlearnsazure.blog/2019/12/13/github-actions/"
+      name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_SP }}
+    - name: Deploy to WebApp in Azure
+      uses: Azure/webapps-deploy@v2
+      with:
+        app-name: modernquote-qa
+        package: ${{ env.Pipeline.Workspace }}/**/*.zip
+                    
