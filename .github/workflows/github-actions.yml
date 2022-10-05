@@ -7,7 +7,7 @@ on:
     branches:
     - master
 env:
-  solution: 'ModernQuote.Api/ModernQuote.Api.sln'
+  solution: '/ModernQuote.Api/ModernQuote.Api.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: Release
 jobs:
@@ -22,11 +22,11 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
     - name: Package Restore
-      run: dotnet restore -s {{env.solution}}
+      run: dotnet restore  {{env.solution}}
     - name: Build with dotnet
-      run: dotnet build --configuration Release -s {{env.solution}}
+      run: dotnet build --configuration Release {{env.solution}}
     - name: Test dotnet 
-      run: dotnet test -s {{env.solution}}
+      run: dotnet test {{env.solution}}
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/quotemgmt
     - name: Publish the Artifact
