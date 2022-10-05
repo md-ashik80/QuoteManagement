@@ -16,19 +16,21 @@ jobs:
     name: Build Job
     steps:
     - uses: actions/checkout@v2
-    - uses: microsoft/setup-msbuild@v1.0.2
-    - name: Install Nuget Tool
-      uses: nuget/setup-nuget@v1
-    - name: NuGet Restore
-      run: nuget restore ${{ env.solution }}
-    - name: Build .NET Core Solution
-      run: msbuild '${{ env.solution }}' /p:configuration='${{ env.buildConfiguration }}' /p:platform='${{ env.buildPlatform }}' /p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="${{ github.workspace }}\WebApp.zip" /p:DeployIisAppPath="Default Web Site"
-    - name: Unit Test the Code
-      run: dotnet test **/*Test/*.csproj --configuration ${{ env.buildConfiguration }}
+    - name: Set up .NET Core
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        include-prerelease: true
+    - name: Build with dotnet
+      run: dotnet build --configuration Release
+    - name: Test dotnet
+      run: dotnet test
+    - name: dotnet publish
+      run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/quotemgmt
     - name: Publish the Artifact
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ env.Pipeline.Workspace }}
+        path: ${{ env.DOTNET_ROOT }}
   DeployDev_Stage_DeployDEV:
     # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     runs-on: windows-latest
