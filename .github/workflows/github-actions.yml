@@ -12,6 +12,7 @@ env:
   buildConfiguration: Release
 jobs:
   Build_Stage_Build:
+    runs-on: windows-latest
     name: Build Job
     steps:
     - uses: actions/checkout@v2
@@ -30,6 +31,7 @@ jobs:
         path: ${{ env.Pipeline.Workspace }}
   DeployDev_Stage_DeployDEV:
     # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    runs-on: windows-latest
     name: Deploy Dev Job
     needs:
     - Build_Stage_Build
@@ -48,6 +50,7 @@ jobs:
         package: ${{ env.Pipeline.Workspace }}/**/*.zip
   DeployQA_Stage_DeployQA:
     # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
+    runs-on: windows-latest
     name: Deploy QA Job
     needs:
     - DeployDev_Stage_DeployDEV
