@@ -7,7 +7,7 @@ on:
     branches:
     - master
 env:
-  solution: '/ModernQuote.Api/ModernQuote.Api.sln'
+  solution: './ModernQuote.Api/ModernQuote.Api.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: Release
 jobs:
