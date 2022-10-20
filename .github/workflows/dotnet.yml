@@ -21,8 +21,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj
+      run: dotnet restore './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj'
     - name: Build
-      run: dotnet build './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj
+      run: dotnet build './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj'
     - name: Test
-      run: dotnet test './ModernQuote.Api/ModernQuote.Api.Test/ModernQuote.Api.Test.csproj
+      run: dotnet test './ModernQuote.Api/ModernQuote.Api.Test/ModernQuote.Api.Test.csproj'
