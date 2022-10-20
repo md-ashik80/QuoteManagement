@@ -22,11 +22,11 @@ jobs:
         dotnet-version: '6.0.x'
         include-prerelease: true
     - name: Package Restore
-      run: dotnet restore  {{env.solution}}
+      run: dotnet restore  './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj'
     - name: Build with dotnet
-      run: dotnet build --configuration Release {{env.solution}}
+      run: dotnet build --configuration Release './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj'
     - name: Test dotnet 
-      run: dotnet test {{env.solution}}
+      run: dotnet test './ModernQuote.Api/ModernQuote.Api.Test/ModernQuote.Api.Test.csproj'
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/quotemgmt
     - name: Publish the Artifact
