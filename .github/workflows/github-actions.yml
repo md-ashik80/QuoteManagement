@@ -29,10 +29,11 @@ jobs:
       run: dotnet test './ModernQuote.Api/ModernQuote.Api.Test/ModernQuote.Api.Test.csproj'
     - name: dotnet publish
       run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/quotemgmt './ModernQuote.Api/ModernQuote.Api/ModernQuote.Api.csproj'
+    
     - name: Publish the Artifact
       uses: actions/upload-artifact@v2
       with:
-        path: ${{ env.DOTNET_ROOT }}
+        path: ${{ env.DOTNET_ROOT }}/quotemgmt
   DeployDev_Stage_DeployDEV:
     # 'Note: Azure DevOps strategy>runOnce does not have an equivalent in GitHub Actions yet, and only the deploy steps are transferred to steps'
     runs-on: windows-latest
